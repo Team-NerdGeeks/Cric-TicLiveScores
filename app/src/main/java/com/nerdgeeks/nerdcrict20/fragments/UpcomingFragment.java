@@ -3,12 +3,15 @@ package com.nerdgeeks.nerdcrict20.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.nerdgeeks.nerdcrict20.R;
+import com.nerdgeeks.nerdcrict20.adapters.MatchAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
 import com.nerdgeeks.nerdcrict20.models.Matches;
@@ -31,6 +34,8 @@ public class UpcomingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private MatchAdapter matchAdapter;
+    private RecyclerView recyclerView;
 
 
     public UpcomingFragment() {
@@ -69,6 +74,10 @@ public class UpcomingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_upcoming, container, false);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.mRecyclerView);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         String Url = "/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1";
         getUpcomingMatchesData(Url,rootView);
         return rootView;
@@ -84,6 +93,10 @@ public class UpcomingFragment extends Fragment {
                 Log.d("onResponse", response.message());
 
                 Matches matches = response.body();
+
+                matchAdapter = new MatchAdapter(getContext(),matches.getMatches());
+
+                recyclerView.setAdapter(matchAdapter);
             }
 
             @Override
