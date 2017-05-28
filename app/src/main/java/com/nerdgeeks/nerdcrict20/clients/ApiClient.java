@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ApiClient {
-    public static final String BASE_URL = "http://cricapi.com/api";
+    public static final String BASE_URL = "http://cricapi.com";
     private static Retrofit retrofit = null;
 
 

@@ -40,16 +40,19 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.listItem.setText(matches.get(position).getUniqueId());
+        Boolean isMatchStarted = matches.get(position).getMatchStarted();
 
-        holder.listItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onItemClickListener.onClick(view, position);
-            }
-        });
+        if(!isMatchStarted){
+            holder.listItem.setText(String.valueOf(matches.get(position).getMatchStarted()));
+        }
+//        holder.listItem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onItemClickListener.onClick(view, position);
+//            }
+//        });
     }
 
     @Override
@@ -63,7 +66,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
         private  OnItemClickListener onItemClickListener;
         ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            listItem = (TextView) itemView.findViewById(R.id.list_item);
+            listItem = (TextView) itemView.findViewById(R.id.textView);
             this.onItemClickListener = onItemClickListener;
         }
 

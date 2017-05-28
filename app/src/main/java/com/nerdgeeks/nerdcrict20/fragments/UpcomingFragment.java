@@ -78,7 +78,7 @@ public class UpcomingFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        String Url = "/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1";
+        String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1";
         getUpcomingMatchesData(Url,rootView);
         return rootView;
     }
@@ -97,6 +97,7 @@ public class UpcomingFragment extends Fragment {
                 matchAdapter = new MatchAdapter(getContext(),matches.getMatches());
 
                 recyclerView.setAdapter(matchAdapter);
+
             }
 
             @Override
