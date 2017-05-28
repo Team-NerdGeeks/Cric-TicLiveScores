@@ -42,11 +42,9 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        Boolean isMatchStarted = matches.get(position).getMatchStarted();
 
-        if(!isMatchStarted){
-            holder.listItem.setText(String.valueOf(matches.get(position).getMatchStarted()));
-        }
+        holder.listItem.setText(String.valueOf(matches.get(position).getTeam1()));
+
 //        holder.listItem.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

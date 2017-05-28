@@ -14,7 +14,11 @@ import com.nerdgeeks.nerdcrict20.R;
 import com.nerdgeeks.nerdcrict20.adapters.MatchAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
+import com.nerdgeeks.nerdcrict20.models.Match;
 import com.nerdgeeks.nerdcrict20.models.Matches;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +40,7 @@ public class UpcomingFragment extends Fragment {
     private String mParam2;
     private MatchAdapter matchAdapter;
     private RecyclerView recyclerView;
+    private List<Match> matchTrue = new ArrayList<>();
 
 
     public UpcomingFragment() {
@@ -94,8 +99,13 @@ public class UpcomingFragment extends Fragment {
 
                 Matches matches = response.body();
 
-                matchAdapter = new MatchAdapter(getContext(),matches.getMatches());
+                for(int i=0; i<matches.getMatches().size();i++){
+                    if(!matches.getMatches().get(i).getMatchStarted()){
+                        matchTrue.add(matches.getMatches().get(i));
+                    }
+                }
 
+                matchAdapter = new MatchAdapter(getContext(),matchTrue);
                 recyclerView.setAdapter(matchAdapter);
 
             }
