@@ -113,26 +113,6 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
 //        });
     }
 
-    public String getDateFromUTCTimestamp(long mTimestamp, String mDateFormate) {
-        String date = null;
-        try {
-            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-            cal.setTimeInMillis(mTimestamp * 1000L);
-            date = DateFormat.format(mDateFormate, cal.getTimeInMillis()).toString();
-
-            SimpleDateFormat formatter = new SimpleDateFormat(mDateFormate);
-            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date value = formatter.parse(date);
-
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(mDateFormate);
-            dateFormatter.setTimeZone(TimeZone.getDefault());
-            date = dateFormatter.format(value);
-            return date;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
 
     @Override
     public int getItemCount() {
