@@ -20,6 +20,7 @@ import com.nerdgeeks.nerdcrict20.utils.OnItemClickListener;
 
 import junit.framework.TestCase;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -90,15 +91,19 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
             holder.match_date.setText(final_date);
         }
 
-        String time = date_Time[1].substring(0,5);
-
+        String defaultTimezone = TimeZone.getDefault().getID();
         try {
-            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-            final Date dateObj = sdf.parse(time);
-            holder.match_time.setText(String.valueOf(new SimpleDateFormat("K:mm a").format(dateObj)));
-        } catch (final ParseException e) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT-0530"));
+            Date dm = sdf.parse(date_Time[1]);
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm a");
+            String dateStr = formatter.format(dm);
+            formatter.setTimeZone(TimeZone.getTimeZone(defaultTimezone));
+            holder.match_time.setText(dateStr);
+        } catch (ParseException e) {
             e.printStackTrace();
         }
+
 
 //        holder.listItem.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -106,6 +111,27 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
 //                onItemClickListener.onClick(view, position);
 //            }
 //        });
+    }
+
+    public String getDateFromUTCTimestamp(long mTimestamp, String mDateFormate) {
+        String date = null;
+        try {
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            cal.setTimeInMillis(mTimestamp * 1000L);
+            date = DateFormat.format(mDateFormate, cal.getTimeInMillis()).toString();
+
+            SimpleDateFormat formatter = new SimpleDateFormat(mDateFormate);
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date value = formatter.parse(date);
+
+            SimpleDateFormat dateFormatter = new SimpleDateFormat(mDateFormate);
+            dateFormatter.setTimeZone(TimeZone.getDefault());
+            date = dateFormatter.format(value);
+            return date;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     @Override

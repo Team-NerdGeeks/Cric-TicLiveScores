@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                                 .withIdentifier(3),
                         new PrimaryDrawerItem()
                                 .withName("Ranking")
+                                .withIcon(R.drawable.ic_trophy)
                                 .withIdentifier(4),
                         new SectionDrawerItem()
                                 .withName("MORE"),
