@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
                                 .withIcon(R.drawable.ic_live_tv)
                                 .withIdentifier(1),
                         new PrimaryDrawerItem()
-                                .withName("Upcoming Matches")
-                                .withIcon(R.drawable.ic_schedule)
+                                .withName("Fixtures")
+                                .withIcon(R.drawable.ic_calendar)
                                 .withIdentifier(2),
                         new PrimaryDrawerItem()
                                 .withName("Results")
@@ -66,9 +66,11 @@ public class MainActivity extends AppCompatActivity {
                                 .withName("MORE"),
                         new PrimaryDrawerItem()
                                 .withName("Rate Me")
+                                .withIcon(R.drawable.ic_rate_review)
                                 .withIdentifier(5),
                         new PrimaryDrawerItem()
                                 .withName("About")
+                                .withIcon(R.drawable.ic_info)
                                 .withIdentifier(6)
 
                 )

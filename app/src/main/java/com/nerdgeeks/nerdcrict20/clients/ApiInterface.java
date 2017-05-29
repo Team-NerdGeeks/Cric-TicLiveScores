@@ -1,5 +1,6 @@
 package com.nerdgeeks.nerdcrict20.clients;
 
+import com.nerdgeeks.nerdcrict20.models.LiveMatch;
 import com.nerdgeeks.nerdcrict20.models.Matches;
 
 import retrofit2.Call;
@@ -12,5 +13,8 @@ import retrofit2.http.Url;
 
 public interface ApiInterface {
     @GET
-    Call<Matches> getSparksData(@Url String Url);
+    Call<Matches> getMatchData(@Url String mUrl);
+
+    @GET
+    Call<LiveMatch> getLiveMatchData(@Url String nUrl);
 }
