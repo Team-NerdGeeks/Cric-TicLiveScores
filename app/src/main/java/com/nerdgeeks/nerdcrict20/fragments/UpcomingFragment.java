@@ -40,7 +40,7 @@ public class UpcomingFragment extends Fragment {
     private String mParam2;
     private MatchAdapter matchAdapter;
     private RecyclerView recyclerView;
-    private List<Match> matchTrue = new ArrayList<>();
+    private List<Match> upcomingMatches = new ArrayList<>();
 
 
     public UpcomingFragment() {
@@ -83,7 +83,7 @@ public class UpcomingFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1";
+        String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&v=3";
         getUpcomingMatchesData(Url,rootView);
         return rootView;
     }
@@ -101,11 +101,11 @@ public class UpcomingFragment extends Fragment {
 
                 for(int i=0; i<matches.getMatches().size();i++){
                     if(!matches.getMatches().get(i).getMatchStarted()){
-                        matchTrue.add(matches.getMatches().get(i));
+                        upcomingMatches.add(matches.getMatches().get(i));
                     }
                 }
 
-                matchAdapter = new MatchAdapter(getContext(),matchTrue);
+                matchAdapter = new MatchAdapter(getContext(),upcomingMatches);
                 recyclerView.setAdapter(matchAdapter);
 
             }

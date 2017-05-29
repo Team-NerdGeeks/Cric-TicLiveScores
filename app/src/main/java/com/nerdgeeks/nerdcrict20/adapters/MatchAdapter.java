@@ -1,7 +1,13 @@
 package com.nerdgeeks.nerdcrict20.adapters;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.support.annotation.IntegerRes;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +18,14 @@ import com.nerdgeeks.nerdcrict20.models.Match;
 import com.nerdgeeks.nerdcrict20.R;
 import com.nerdgeeks.nerdcrict20.utils.OnItemClickListener;
 
+import junit.framework.TestCase;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by hp on 5/7/2017.
@@ -23,6 +36,12 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
     private Context context;
     private List<Match> matches;
     private OnItemClickListener onItemClickListener;
+
+    private String[] months = {"January", "February",
+            "March", "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+    };
 
     public MatchAdapter(Context context, List<Match> matches) {
         this.context = context;
@@ -42,8 +61,44 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+        holder.team1.setText(matches.get(position).getTeam1());
+        holder.card1.setBackgroundColor(getRandomMaterialColor("500"));
 
-        holder.listItem.setText(String.valueOf(matches.get(position).getTeam1()));
+        holder.team2.setText(matches.get(position).getTeam2());
+        holder.card2.setBackgroundColor(getRandomMaterialColor("500"));
+
+        holder.match_type.setText(matches.get(position).getType());
+        String dateTime = matches.get(position).getDateTimeGMT();
+
+        //date and time split & date_Time[0] means date
+        String[] date_Time = dateTime.split("T");
+
+        //date split & date[0] means year, date[1], means month & date[2] means day
+        String[] date = date_Time[0].split("-");
+
+        if (Integer.parseInt(date[1]) < 10){
+            String[] month_no = date[1].split("0");
+            int m = Integer.valueOf(month_no[1]) ;
+            String month = months[m-1];
+            String final_date = date[2] + " " + month + " " + date[0];
+            holder.match_date.setText(final_date);
+
+        } else {
+            int m = Integer.valueOf(date[1]);
+            String month = months[m-1];
+            String final_date = date[2] + " " + month + " " + date[0];
+            holder.match_date.setText(final_date);
+        }
+
+        String time = date_Time[1].substring(0,5);
+
+        try {
+            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
+            final Date dateObj = sdf.parse(time);
+            holder.match_time.setText(String.valueOf(new SimpleDateFormat("K:mm a").format(dateObj)));
+        } catch (final ParseException e) {
+            e.printStackTrace();
+        }
 
 //        holder.listItem.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -58,13 +113,33 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
         return matches.size();
     }
 
+    private int getRandomMaterialColor(String typeColor) {
+        int returnColor = Color.GRAY;
+        int arrayId = context.getResources().getIdentifier("mdcolor_" + typeColor, "array", context.getPackageName());
+
+        if (arrayId != 0) {
+            TypedArray colors = context.getResources().obtainTypedArray(arrayId);
+            int index = (int) (Math.random() * colors.length());
+            returnColor = colors.getColor(index, Color.GRAY);
+            colors.recycle();
+        }
+        return returnColor;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView listItem;
+        private TextView team1, team2, match_date, match_type, match_time;
+        private CardView card1,card2;
         private  OnItemClickListener onItemClickListener;
         ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            listItem = (TextView) itemView.findViewById(R.id.textView);
+            team1 = (TextView) itemView.findViewById(R.id.team_1);
+            team2 = (TextView) itemView.findViewById(R.id.team_2);
+            match_date = (TextView) itemView.findViewById(R.id.match_date);
+            match_type = (TextView) itemView.findViewById(R.id.match_type);
+            match_time = (TextView) itemView.findViewById(R.id.match_time);
+            card1 = (CardView) itemView.findViewById(R.id.card1);
+            card2 = (CardView) itemView.findViewById(R.id.card2);
             this.onItemClickListener = onItemClickListener;
         }
 

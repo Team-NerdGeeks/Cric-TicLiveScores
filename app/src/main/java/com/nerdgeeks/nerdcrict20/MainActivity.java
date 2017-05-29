@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         new PrimaryDrawerItem()
                                 .withName("Live Scores")
-                                .withIcon(R.drawable.ic_schedule)
+                                .withIcon(R.drawable.ic_live_tv)
                                 .withIdentifier(1),
                         new PrimaryDrawerItem()
                                 .withName("Upcoming Matches")
