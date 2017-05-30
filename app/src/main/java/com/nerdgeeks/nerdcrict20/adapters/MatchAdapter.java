@@ -63,10 +63,10 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         holder.team1.setText(matches.get(position).getTeam1());
-        holder.card1.setBackgroundColor(getRandomMaterialColor("500"));
+        holder.card1.setBackgroundColor(getRandomMaterialColor("400"));
 
         holder.team2.setText(matches.get(position).getTeam2());
-        holder.card2.setBackgroundColor(getRandomMaterialColor("500"));
+        holder.card2.setBackgroundColor(getRandomMaterialColor("400"));
 
         holder.match_type.setText(matches.get(position).getType());
         String dateTime = matches.get(position).getDateTimeGMT();
@@ -92,6 +92,8 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
         }
 
         String defaultTimezone = TimeZone.getDefault().getID();
+
+        holder.gmt.setText(TimeZone.getTimeZone(defaultTimezone).getID());
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT-0530"));
@@ -142,7 +144,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView team1, team2, match_date, match_type, match_time;
+        private TextView team1, team2, match_date, match_type, match_time, gmt;
         private CardView card1,card2;
         private  OnItemClickListener onItemClickListener;
         ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
@@ -152,6 +154,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
             match_date = (TextView) itemView.findViewById(R.id.match_date);
             match_type = (TextView) itemView.findViewById(R.id.match_type);
             match_time = (TextView) itemView.findViewById(R.id.match_time);
+            gmt = (TextView) itemView.findViewById(R.id.gmt);
             card1 = (CardView) itemView.findViewById(R.id.card1);
             card2 = (CardView) itemView.findViewById(R.id.card2);
             this.onItemClickListener = onItemClickListener;

@@ -16,6 +16,7 @@ import com.nerdgeeks.nerdcrict20.adapters.MatchAdapter;
 import com.nerdgeeks.nerdcrict20.adapters.ScoreAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
+import com.nerdgeeks.nerdcrict20.helper.DividerItemDecoration;
 import com.nerdgeeks.nerdcrict20.models.Match;
 import com.nerdgeeks.nerdcrict20.models.Matches;
 
@@ -85,6 +86,7 @@ public class LiveFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
+        //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&v=3";
         getLiveMatchesData(Url,rootView);
         return rootView;

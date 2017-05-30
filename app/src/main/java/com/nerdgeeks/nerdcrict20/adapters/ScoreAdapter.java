@@ -72,10 +72,10 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         holder.team1.setText(matches.get(position).getTeam1());
-        holder.card1.setBackgroundColor(getRandomMaterialColor("500"));
+        holder.card1.setBackgroundColor(getRandomMaterialColor("400"));
 
         holder.team2.setText(matches.get(position).getTeam2());
-        holder.card2.setBackgroundColor(getRandomMaterialColor("500"));
+        holder.card2.setBackgroundColor(getRandomMaterialColor("400"));
 
         holder.match_type.setText(matches.get(position).getType());
 
