@@ -99,7 +99,15 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm a");
             String dateStr = formatter.format(dm);
             formatter.setTimeZone(TimeZone.getTimeZone(defaultTimezone));
-            holder.match_time.setText(dateStr);
+
+            String[] dateChck = dateStr.split(":");
+            if(Integer.valueOf(dateChck[0])>12){
+                String finaldate= Integer.valueOf(dateChck[0])-12+":"+dateChck[1];
+                holder.match_time.setText(finaldate);
+            }
+            else {
+                holder.match_time.setText(dateStr);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -3,11 +3,26 @@ package com.nerdgeeks.nerdcrict20.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.nerdgeeks.nerdcrict20.R;
+import com.nerdgeeks.nerdcrict20.adapters.MatchAdapter;
+import com.nerdgeeks.nerdcrict20.clients.ApiClient;
+import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
+import com.nerdgeeks.nerdcrict20.models.Match;
+import com.nerdgeeks.nerdcrict20.models.Matches;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +38,9 @@ public class OthersFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private MatchAdapter matchAdapter;
+    private RecyclerView recyclerView;
+    private List<Match> upcomingMatches = new ArrayList<>();
 
 
     public OthersFragment() {
@@ -60,7 +78,45 @@ public class OthersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_others, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_others, container, false);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.mRecyclerView);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&v=3";
+        getUpcomingMatchesData(Url,rootView);
+        return rootView;
+    }
+
+    private void getUpcomingMatchesData(String URL, View rootView){
+        ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+        Call<Matches> call = service.getMatchData(URL);
+
+        call.enqueue(new Callback<Matches>() {
+            @Override
+            public void onResponse(Call<Matches> call, Response<Matches> response) {
+                Log.d("onResponse", response.message());
+
+                Matches matches = response.body();
+
+                for(int i=0; i<matches.getMatches().size();i++){
+                    if( (!matches.getMatches().get(i).getMatchStarted()) &&
+                            ( !matches.getMatches().get(i).getType().equals("One-Day Internationals") &&
+                                    !matches.getMatches().get(i).getType().equals("Twenty20 Internationals"))) {
+                        upcomingMatches.add(matches.getMatches().get(i));
+                    }
+                }
+
+                matchAdapter = new MatchAdapter(getContext(),upcomingMatches);
+                recyclerView.setAdapter(matchAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<Matches> call, Throwable t) {
+
+            }
+        });
     }
 
 }

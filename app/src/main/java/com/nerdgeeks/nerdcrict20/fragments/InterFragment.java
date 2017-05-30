@@ -100,7 +100,9 @@ public class InterFragment extends Fragment {
                 Matches matches = response.body();
 
                 for(int i=0; i<matches.getMatches().size();i++){
-                    if(!matches.getMatches().get(i).getMatchStarted()){
+                    if( (!matches.getMatches().get(i).getMatchStarted()) &&
+                            ( matches.getMatches().get(i).getType().equals("One-Day Internationals") ||
+                                    matches.getMatches().get(i).getType().equals("Twenty20 Internationals"))) {
                         upcomingMatches.add(matches.getMatches().get(i));
                     }
                 }
