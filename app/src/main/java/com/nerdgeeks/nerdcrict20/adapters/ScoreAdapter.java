@@ -78,41 +78,6 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
         holder.card2.setBackgroundColor(getRandomMaterialColor("500"));
 
         holder.match_type.setText(matches.get(position).getType());
-        String dateTime = matches.get(position).getDateTimeGMT();
-
-        //date and time split & date_Time[0] means date
-        String[] date_Time = dateTime.split("T");
-
-        //date split & date[0] means year, date[1], means month & date[2] means day
-        String[] date = date_Time[0].split("-");
-
-        if (Integer.parseInt(date[1]) < 10){
-            String[] month_no = date[1].split("0");
-            int m = Integer.valueOf(month_no[1]) ;
-            String month = months[m-1];
-            String final_date = date[2] + " " + month + " " + date[0];
-            holder.match_date.setText(final_date);
-
-        } else {
-            int m = Integer.valueOf(date[1]);
-            String month = months[m-1];
-            String final_date = date[2] + " " + month + " " + date[0];
-            holder.match_date.setText(final_date);
-        }
-
-        String defaultTimezone = TimeZone.getDefault().getID();
-        holder.gmt.setText(TimeZone.getTimeZone(defaultTimezone).getID());
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT-0530"));
-            Date dm = sdf.parse(date_Time[1]);
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm a");
-            String dateStr = formatter.format(dm);
-            formatter.setTimeZone(TimeZone.getTimeZone(defaultTimezone));
-            holder.match_time.setText(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         String uID = String.valueOf(matches.get(position).getUniqueId());
         String url= "/api/cricketScore?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+uID;
@@ -169,19 +134,16 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView team1, team2, match_date, match_type, match_time, match_score, match_inngs, gmt;
+        private TextView team1, team2, match_type, match_score, match_inngs;
         private CardView card1,card2;
         private  OnItemClickListener onItemClickListener;
         ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             team1 = (TextView) itemView.findViewById(R.id.team1);
             team2 = (TextView) itemView.findViewById(R.id.team2);
-            match_date = (TextView) itemView.findViewById(R.id.date);
             match_type = (TextView) itemView.findViewById(R.id.type);
-            match_time = (TextView) itemView.findViewById(R.id.time);
             match_score = (TextView) itemView.findViewById(R.id.score);
             match_inngs = (TextView) itemView.findViewById(R.id.innings);
-            gmt = (TextView) itemView.findViewById(R.id.gmt);
             card1 = (CardView) itemView.findViewById(R.id.card_1);
             card2 = (CardView) itemView.findViewById(R.id.card_2);
             this.onItemClickListener = onItemClickListener;
