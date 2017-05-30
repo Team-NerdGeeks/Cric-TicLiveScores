@@ -101,6 +101,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
         }
 
         String defaultTimezone = TimeZone.getDefault().getID();
+        holder.gmt.setText(TimeZone.getTimeZone(defaultTimezone).getID());
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT-0530"));
@@ -168,7 +169,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView team1, team2, match_date, match_type, match_time, match_score, match_inngs;
+        private TextView team1, team2, match_date, match_type, match_time, match_score, match_inngs, gmt;
         private CardView card1,card2;
         private  OnItemClickListener onItemClickListener;
         ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
@@ -180,6 +181,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
             match_time = (TextView) itemView.findViewById(R.id.time);
             match_score = (TextView) itemView.findViewById(R.id.score);
             match_inngs = (TextView) itemView.findViewById(R.id.innings);
+            gmt = (TextView) itemView.findViewById(R.id.gmt);
             card1 = (CardView) itemView.findViewById(R.id.card_1);
             card2 = (CardView) itemView.findViewById(R.id.card_2);
             this.onItemClickListener = onItemClickListener;
