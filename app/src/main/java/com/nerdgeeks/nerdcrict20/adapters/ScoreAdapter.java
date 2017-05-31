@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.IntegerRes;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -137,6 +138,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
         private TextView team1, team2, match_type, match_score, match_inngs;
         private CardView card1,card2;
         private  OnItemClickListener onItemClickListener;
+        private AppCompatButton match_center;
         ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             team1 = (TextView) itemView.findViewById(R.id.team1);
@@ -146,6 +148,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
             match_inngs = (TextView) itemView.findViewById(R.id.innings);
             card1 = (CardView) itemView.findViewById(R.id.card_1);
             card2 = (CardView) itemView.findViewById(R.id.card_2);
+            match_center = (AppCompatButton) itemView.findViewById(R.id.match_center);
             this.onItemClickListener = onItemClickListener;
         }
 

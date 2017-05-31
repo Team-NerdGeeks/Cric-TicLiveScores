@@ -89,7 +89,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView team1, team2, match_date, match_type, match_time, gmt;
+        private TextView team1, team2, match_date, match_type, match_time;
         private CardView card1,card2;
         private  OnItemClickListener onItemClickListener;
         ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
@@ -99,7 +99,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             match_date = (TextView) itemView.findViewById(R.id.match_date);
             match_type = (TextView) itemView.findViewById(R.id.match_type);
             match_time = (TextView) itemView.findViewById(R.id.match_time);
-            gmt = (TextView) itemView.findViewById(R.id.gmt);
             card1 = (CardView) itemView.findViewById(R.id.card1);
             card2 = (CardView) itemView.findViewById(R.id.card2);
             this.onItemClickListener = onItemClickListener;

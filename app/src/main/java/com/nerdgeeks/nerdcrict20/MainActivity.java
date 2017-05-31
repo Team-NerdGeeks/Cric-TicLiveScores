@@ -52,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
                                 .withIcon(R.drawable.ic_live_tv)
                                 .withIdentifier(1),
                         new PrimaryDrawerItem()
-                                .withName("Upcoming Fixtures")
-                                .withIcon(R.drawable.ic_calendar)
+                                .withName("Fixtures")
+                                .withIcon(R.drawable.ic_schedule)
                                 .withIdentifier(2),
                         new PrimaryDrawerItem()
-                                .withName("MatchCalendar")
+                                .withName("Calendar")
                                 .withIcon(R.drawable.ic_calendar)
                                 .withIdentifier(3),
                         new PrimaryDrawerItem()
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                 fragmentTransaction.setCustomAnimations(R.anim.anim_enter, R.anim.anim_leave);
                                 fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
                             }else if (drawerItem.getIdentifier() == 3) {
-                                toolbar.setSubtitle("Matches Calendar");
+                                toolbar.setSubtitle("Match Calendar");
                                 fragment = new MatchCalendar();
                                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.setCustomAnimations(R.anim.anim_enter, R.anim.anim_leave);
