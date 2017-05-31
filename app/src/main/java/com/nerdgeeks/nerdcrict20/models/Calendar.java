@@ -66,11 +66,11 @@ public class Calendar {
         this.cache = cache;
     }
 
-    public List<Datum> getData() {
+    public List<Datum> getCalendarData() {
         return data;
     }
 
-    public void setData(List<Datum> data) {
+    public void setCalendarData(List<Datum> data) {
         this.data = data;
     }
 

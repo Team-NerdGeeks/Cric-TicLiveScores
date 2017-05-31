@@ -18,6 +18,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.nerdgeeks.nerdcrict20.fragments.MatchCalendar;
 import com.nerdgeeks.nerdcrict20.fragments.LiveFragment;
 import com.nerdgeeks.nerdcrict20.fragments.RankingFragment;
 import com.nerdgeeks.nerdcrict20.fragments.ResultFragment;
@@ -51,27 +52,31 @@ public class MainActivity extends AppCompatActivity {
                                 .withIcon(R.drawable.ic_live_tv)
                                 .withIdentifier(1),
                         new PrimaryDrawerItem()
-                                .withName("Fixtures")
+                                .withName("Upcoming Fixtures")
                                 .withIcon(R.drawable.ic_calendar)
                                 .withIdentifier(2),
                         new PrimaryDrawerItem()
+                                .withName("MatchCalendar")
+                                .withIcon(R.drawable.ic_calendar)
+                                .withIdentifier(3),
+                        new PrimaryDrawerItem()
                                 .withName("Results")
                                 .withIcon(R.drawable.ic_timeline)
-                                .withIdentifier(3),
+                                .withIdentifier(4),
                         new PrimaryDrawerItem()
                                 .withName("Ranking")
                                 .withIcon(R.drawable.ic_trophy)
-                                .withIdentifier(4),
+                                .withIdentifier(5),
                         new SectionDrawerItem()
                                 .withName("MORE"),
                         new PrimaryDrawerItem()
                                 .withName("Rate Me")
                                 .withIcon(R.drawable.ic_rate_review)
-                                .withIdentifier(5),
+                                .withIdentifier(6),
                         new PrimaryDrawerItem()
                                 .withName("About")
                                 .withIcon(R.drawable.ic_info)
-                                .withIdentifier(6)
+                                .withIdentifier(7)
 
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -81,33 +86,35 @@ public class MainActivity extends AppCompatActivity {
                             Fragment fragment;
                             if (drawerItem.getIdentifier() == 1) {
                                 toolbar.setSubtitle("Live Scores");
-                                fragment =
-                                        new LiveFragment();
+                                fragment = new LiveFragment();
                                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.setCustomAnimations(R.anim.anim_enter, R.anim.anim_leave);
                                 fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
                             } else if (drawerItem.getIdentifier() == 2) {
                                 toolbar.setSubtitle("Upcoming Matches");
-                                fragment =
-                                        new UpcomingFragment();
+                                fragment = new UpcomingFragment();
                                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.setCustomAnimations(R.anim.anim_enter, R.anim.anim_leave);
                                 fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
-                            } else if (drawerItem.getIdentifier() == 3) {
+                            }else if (drawerItem.getIdentifier() == 3) {
+                                toolbar.setSubtitle("Matches Calendar");
+                                fragment = new MatchCalendar();
+                                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction.setCustomAnimations(R.anim.anim_enter, R.anim.anim_leave);
+                                fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
+                            } else if (drawerItem.getIdentifier() == 4) {
                                 toolbar.setSubtitle("Results");
-                                fragment =
-                                        new ResultFragment();
+                                fragment = new ResultFragment();
                                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.setCustomAnimations(R.anim.anim_enter, R.anim.anim_leave);
                                 fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
-                            }else if (drawerItem.getIdentifier() == 4) {
+                            }else if (drawerItem.getIdentifier() == 5) {
                                 toolbar.setSubtitle("Rankings");
-                                fragment =
-                                        new RankingFragment();
+                                fragment = new RankingFragment();
                                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.setCustomAnimations(R.anim.anim_enter, R.anim.anim_leave);
                                 fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
-                            } else if (drawerItem.getIdentifier() == 5) {
+                            } else if (drawerItem.getIdentifier() == 6) {
                                 Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
                                 Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
                                 // To count with Play market backstack, After pressing back button,
@@ -121,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                                     startActivity(new Intent(Intent.ACTION_VIEW,
                                             Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
                                 }
-                            } else if (drawerItem.getIdentifier() == 6) {
+                            } else if (drawerItem.getIdentifier() == 7) {
                                 new MaterialDialog.Builder(MainActivity.this)
                                         .title("About Developer")
                                         .customView(R.layout.about, true)

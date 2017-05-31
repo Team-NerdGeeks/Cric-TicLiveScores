@@ -1,5 +1,6 @@
 package com.nerdgeeks.nerdcrict20.clients;
 
+import com.nerdgeeks.nerdcrict20.models.Calendar;
 import com.nerdgeeks.nerdcrict20.models.LiveMatch;
 import com.nerdgeeks.nerdcrict20.models.Matches;
 import com.nerdgeeks.nerdcrict20.models.Summary;
@@ -21,4 +22,7 @@ public interface ApiInterface {
 
     @GET
     Call<Summary> getSummary(@Url String nUrl);
+
+    @GET
+    Call<Calendar> getCalendar(@Url String nUrl);
 }
