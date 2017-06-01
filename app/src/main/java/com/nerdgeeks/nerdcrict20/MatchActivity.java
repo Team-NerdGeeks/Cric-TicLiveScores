@@ -6,19 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
-import com.nerdgeeks.nerdcrict20.adapters.DynamicAdapter;
-import com.nerdgeeks.nerdcrict20.adapters.MatchAdapter;
 import com.nerdgeeks.nerdcrict20.adapters.SummaryAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
 import com.nerdgeeks.nerdcrict20.helper.DividerItemDecoration;
 import com.nerdgeeks.nerdcrict20.helper.DoubleHeaderDecoration;
 import com.nerdgeeks.nerdcrict20.models.Batting;
-import com.nerdgeeks.nerdcrict20.models.Bowling;
-import com.nerdgeeks.nerdcrict20.models.Match;
-import com.nerdgeeks.nerdcrict20.models.Matches;
 import com.nerdgeeks.nerdcrict20.models.Score__;
 import com.nerdgeeks.nerdcrict20.models.Summary;
 

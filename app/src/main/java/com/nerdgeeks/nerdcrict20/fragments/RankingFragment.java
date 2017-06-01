@@ -1,12 +1,13 @@
 package com.nerdgeeks.nerdcrict20.fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import com.nerdgeeks.nerdcrict20.R;
 
 /**
@@ -23,7 +24,7 @@ public class RankingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private WebView browser;
 
     public RankingFragment() {
         // Required empty public constructor
@@ -35,7 +36,7 @@ public class RankingFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RankingFragment.
+     * @return A new instance of fragment LiveScoreFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static RankingFragment newInstance(String param1, String param2) {
@@ -60,7 +61,48 @@ public class RankingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ranking, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_ranking, container, false);
+
+        String URL = "file:///android_asset/cric.html?tab=ranking";
+
+        //Initializing WebView
+        browser = (WebView) rootView.findViewById(R.id.mWebView);
+        browser.getSettings().setJavaScriptEnabled(true);
+        browser.getSettings().setFixedFontFamily("fonts/HelveticaNeue.ttf");
+
+        final SwipeRefreshLayout webRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.webRefresh);
+
+        webRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                browser.reload();
+                browser.clearCache(true);
+                webRefresh.setRefreshing(false);
+            }
+        });
+
+        //Load URL on WebView
+        startWebView(URL);
+
+        return rootView;
     }
 
+    private void startWebView(String url) {
+        browser.setWebViewClient(new WebViewClient() {
+            //If you will not use this method url links are opeen in new brower not in webview
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            //Show loader on url load
+            public void onLoadResource (WebView view, String url) {
+                view.scrollTo(0,0);
+            }
+            public void onPageFinished(WebView view, String url) {
+                view.scrollTo(0,0);
+            }
+        });
+        browser.loadUrl(url);
+    }
 }

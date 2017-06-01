@@ -79,11 +79,11 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHold
     public void onBindHeaderHolder(SummaryAdapter.HeaderHolder viewholder, int position) {
         //viewholder.state.setText(battings.get(position).getTitle());
         if (position+12>battings.size()){
-            viewholder.total_score.setText(battings.get(battings.size()-1).getR());
+            viewholder.total_score.setText(battings.get(battings.size()-1).getR()+"-");
             viewholder.run_rate.setText(battings.get(battings.size()-1).getB());
             viewholder.overs.setText(battings.get(battings.size()-1).getDismissalInfo());
         } else {
-            viewholder.total_score.setText(battings.get(position+12).getR());
+            viewholder.total_score.setText(battings.get(position+12).getR()+"-");
             viewholder.run_rate.setText(battings.get(position+12).getB());
             viewholder.overs.setText(battings.get(position+12).getDismissalInfo());
         }
