@@ -2,11 +2,17 @@ package com.nerdgeeks.nerdcrict20.fragments;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +21,12 @@ import com.nerdgeeks.nerdcrict20.adapters.CalendarAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
 import com.nerdgeeks.nerdcrict20.models.Calendar;
+import com.nerdgeeks.nerdcrict20.models.Datum;
+import com.nerdgeeks.nerdcrict20.models.Match;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,7 +36,7 @@ import retrofit2.Response;
  * Use the {@link InterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MatchCalendar extends Fragment {
+public class MatchCalendar extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,6 +47,8 @@ public class MatchCalendar extends Fragment {
     private String mParam2;
     private CalendarAdapter calendarAdapter;
     private RecyclerView recyclerView;
+    private FloatingActionButton mFabButton;
+    private List<Datum> data;
 
 
     public MatchCalendar() {
@@ -74,11 +88,34 @@ public class MatchCalendar extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.mRecyclerView);
+        mFabButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        mFabButton.setOnClickListener(this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         String Url = "/api/matchCalendar?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&v=3";
         getMatchCalendarData(Url,rootView);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                if (dy > 0 && mFabButton.isShown()){
+                    mFabButton.hide();
+                }
+                else if(dy < 0) {
+                    mFabButton.show();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                if ( newState == RecyclerView.SCROLL_STATE_IDLE){
+                    mFabButton.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         return rootView;
     }
 
@@ -93,7 +130,8 @@ public class MatchCalendar extends Fragment {
 
                 Calendar calendar = response.body();
 
-                calendarAdapter = new CalendarAdapter(getContext(),calendar.getCalendarData());
+                data = calendar.getCalendarData();
+                calendarAdapter = new CalendarAdapter(getContext(), data);
                 recyclerView.setAdapter(calendarAdapter);
 
             }
@@ -103,5 +141,86 @@ public class MatchCalendar extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fab :
+                createPopUpWindow(v);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void createPopUpWindow(View v) {
+        PopupMenu popup = new PopupMenu(getContext(), v);
+        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+
+        MenuPopupHelper menuHelper = new MenuPopupHelper(getContext(), (MenuBuilder) popup.getMenu(), v);
+        menuHelper.setForceShowIcon(true);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.afg:
+                        filter(data,"Afghanistan");
+                        break;
+                    case R.id.aus:
+                        filter(data,"Australia");
+                        break;
+                    case R.id.ban:
+                        filter(data,"Bangladesh");
+                        break;
+                    case R.id.eng:
+                        filter(data,"England");
+                        break;
+                    case R.id.ind:
+                        filter(data,"India");
+                        break;
+                    case R.id.ire:
+                        filter(data,"Ireland");
+                        break;
+                    case R.id.nz:
+                        filter(data,"New Zealand");
+                        break;
+                    case R.id.pak:
+                        filter(data,"Pakistan");
+                        break;
+                    case R.id.sa:
+                        filter(data,"South Africa");
+                        break;
+                    case R.id.sl:
+                        filter(data,"Sri Lanka");
+                        break;
+                    case R.id.wi:
+                        filter(data,"West Indies");
+                        break;
+                    case R.id.zim:
+                        filter(data,"Zimbabwe");
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+        menuHelper.show();
+    }
+
+    private void filter(List<Datum> models, String query) {
+
+        final List<Datum> filteredModelList = new ArrayList<>();
+        for (Datum model : models) {
+            final String text = model.getName();
+            if (text.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        calendarAdapter = new CalendarAdapter(getContext(),filteredModelList);
+        calendarAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(calendarAdapter);
+
     }
 }

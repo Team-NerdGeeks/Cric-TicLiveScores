@@ -52,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
                                 .withIcon(R.drawable.ic_live_tv)
                                 .withIdentifier(1),
                         new PrimaryDrawerItem()
-                                .withName("Fixtures")
-                                .withIcon(R.drawable.ic_schedule)
+                                .withName("Fixtures (Upcoming)")
+                                .withIcon(R.drawable.ic_schedule_copy)
                                 .withIdentifier(2),
                         new PrimaryDrawerItem()
-                                .withName("Calendar")
+                                .withName("ICC Calendar")
                                 .withIcon(R.drawable.ic_calendar)
                                 .withIdentifier(3),
                         new PrimaryDrawerItem()

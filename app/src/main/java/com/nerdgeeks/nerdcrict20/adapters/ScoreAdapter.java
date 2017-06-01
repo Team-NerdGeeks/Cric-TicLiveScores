@@ -1,6 +1,8 @@
 package com.nerdgeeks.nerdcrict20.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.IntegerRes;
@@ -16,12 +18,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nerdgeeks.nerdcrict20.MatchActivity;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
 import com.nerdgeeks.nerdcrict20.models.LiveMatch;
 import com.nerdgeeks.nerdcrict20.models.Match;
 import com.nerdgeeks.nerdcrict20.R;
 import com.nerdgeeks.nerdcrict20.models.Matches;
+import com.nerdgeeks.nerdcrict20.models.Matches_;
 import com.nerdgeeks.nerdcrict20.utils.OnItemClickListener;
 
 import junit.framework.TestCase;
@@ -44,17 +48,11 @@ import retrofit2.Response;
 
 public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> {
 
-    private Context context;
+    private Activity context;
     private List<Match> matches;
     private OnItemClickListener onItemClickListener;
 
-    private String[] months = {"January", "February",
-            "March", "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"
-    };
-
-    public ScoreAdapter(Context context, List<Match> matches) {
+    public ScoreAdapter(Activity context, List<Match> matches) {
         this.context = context;
         this.matches = matches;
     }
@@ -70,27 +68,35 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.team1.setText(matches.get(position).getTeam1());
-        holder.card1.setBackgroundColor(getRandomMaterialColor("400"));
+        if(matches!= null){
+            holder.error_msg.setVisibility(View.INVISIBLE);
+            holder.team1.setText(matches.get(position).getTeam1());
+            holder.card1.setBackgroundColor(getRandomMaterialColor("400"));
 
-        holder.team2.setText(matches.get(position).getTeam2());
-        holder.card2.setBackgroundColor(getRandomMaterialColor("400"));
+            holder.team2.setText(matches.get(position).getTeam2());
+            holder.card2.setBackgroundColor(getRandomMaterialColor("400"));
 
-        holder.match_type.setText(matches.get(position).getType());
+            holder.match_type.setText(matches.get(position).getType());
 
-        String uID = String.valueOf(matches.get(position).getUniqueId());
-        String url= "/api/cricketScore?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+uID;
-        getLiveScoreData(url, holder);
+            final String uID = String.valueOf(matches.get(position).getUniqueId());
+            String url= "/api/cricketScore?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+uID;
+            getLiveScoreData(url, holder);
 
 
-//        holder.listItem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onItemClickListener.onClick(view, position);
-//            }
-//        });
+            holder.match_center.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, MatchActivity.class);
+                    intent.putExtra("unique_id", uID);
+                    context.startActivity(intent);
+                    context.overridePendingTransition(R.anim.anim_enter,R.anim.anim_leave);
+                }
+            });
+        } else {
+           holder.error_msg.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getLiveScoreData(String url, final ViewHolder holder) {
@@ -135,7 +141,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView team1, team2, match_type, match_score, match_inngs;
+        private TextView team1, team2, match_type, match_score, match_inngs, error_msg;
         private CardView card1,card2;
         private  OnItemClickListener onItemClickListener;
         private AppCompatButton match_center;
@@ -146,6 +152,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
             match_type = (TextView) itemView.findViewById(R.id.type);
             match_score = (TextView) itemView.findViewById(R.id.score);
             match_inngs = (TextView) itemView.findViewById(R.id.innings);
+            error_msg = (TextView) itemView.findViewById(R.id.error_message);
             card1 = (CardView) itemView.findViewById(R.id.card_1);
             card2 = (CardView) itemView.findViewById(R.id.card_2);
             match_center = (AppCompatButton) itemView.findViewById(R.id.match_center);

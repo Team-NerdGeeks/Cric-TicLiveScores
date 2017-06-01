@@ -109,7 +109,7 @@ public class LiveFragment extends Fragment {
                     }
                 }
                 
-                liveAdapter = new ScoreAdapter(getContext(),currentMatches);
+                liveAdapter = new ScoreAdapter(getActivity(),currentMatches);
                 recyclerView.setAdapter(liveAdapter);
 
             }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="#FFFFFF"
+    android:weightSum="6"
+    android:layout_width="match_parent"
+    android:layout_height="55dp">
+
+    <TextView
+        android:padding="10dp"
+        android:id="@+id/state"
+        android:layout_weight="4"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/run_over"
+        android:layout_weight=".5"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:gravity="center"
+        android:padding="2dp"
+        android:id="@+id/ball_maiden"
+        android:layout_weight=".5"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/fours_run"
+        android:layout_weight=".5"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:gravity="center"
+        android:padding="2dp"
+        android:id="@+id/sixes_wicket"
+        android:layout_weight=".5"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

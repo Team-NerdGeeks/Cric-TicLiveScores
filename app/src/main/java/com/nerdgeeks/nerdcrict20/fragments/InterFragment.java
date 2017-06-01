@@ -2,11 +2,16 @@ package com.nerdgeeks.nerdcrict20.fragments;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -41,6 +46,7 @@ public class InterFragment extends Fragment {
     private MatchAdapter matchAdapter;
     private RecyclerView recyclerView;
     private List<Match> upcomingMatches = new ArrayList<>();
+    private FloatingActionButton mFabButton;
 
 
     public InterFragment() {
@@ -85,6 +91,7 @@ public class InterFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&v=3";
         getUpcomingMatchesData(Url,rootView);
+
         return rootView;
     }
 
