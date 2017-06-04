@@ -9,9 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nerdgeeks.nerdcrict20.R;
-import com.nerdgeeks.nerdcrict20.models.Batting;
-import com.nerdgeeks.nerdcrict20.models.Bowling;
-import com.nerdgeeks.nerdcrict20.models.Score_;
 import com.nerdgeeks.nerdcrict20.models.Score__;
 
 import java.util.List;
@@ -20,26 +17,24 @@ import java.util.List;
  * Created by IMRAN on 5/31/2017.
  */
 
-public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHolder>
-        implements DoubleHeaderAdapter<SummaryAdapter.HeaderHolder, SummaryAdapter.SubHeaderHolder>{
+public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHolder>
+        implements DoubleHeaderAdapter<BattingAdapter.HeaderHolder, BattingAdapter.SubHeaderHolder>{
     private Context context;
     private List<Score__> battings;
-    private List<Bowling> bowlings;
 
-    public SummaryAdapter(Context context, List<Score__> battings, List<Bowling> bowlings) {
+    public BattingAdapter(Context context, List<Score__> battings) {
         this.context = context;
         this.battings = battings;
-        this.bowlings = bowlings;
     }
 
     @Override
-    public SummaryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BattingAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rootView = LayoutInflater.from(context).inflate(R.layout.item_summary,parent,false);
-        return new SummaryAdapter.ViewHolder(rootView);
+        return new BattingAdapter.ViewHolder(rootView);
     }
 
     @Override
-    public void onBindViewHolder(SummaryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(BattingAdapter.ViewHolder holder, int position) {
         holder.name.setText(battings.get(position).getBatsman());
         holder.dismiss.setText(battings.get(position).getDismissalInfo());
         holder.run_over.setText(battings.get(position).getR());
@@ -55,28 +50,30 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHold
 
     @Override
     public long getHeaderId(int position) {
-        return position/13;
+
+            return position/13;
     }
 
     @Override
     public long getSubHeaderId(int position) {
-        return position/13;
+
+            return position/13;
     }
 
     @Override
-    public SummaryAdapter.HeaderHolder onCreateHeaderHolder(ViewGroup parent) {
+    public BattingAdapter.HeaderHolder onCreateHeaderHolder(ViewGroup parent) {
         View rootView = LayoutInflater.from(context).inflate(R.layout.item_header, parent, false);
-        return new SummaryAdapter.HeaderHolder(rootView);
+        return new BattingAdapter.HeaderHolder(rootView);
     }
 
     @Override
-    public SummaryAdapter.SubHeaderHolder onCreateSubHeaderHolder(ViewGroup parent) {
+    public BattingAdapter.SubHeaderHolder onCreateSubHeaderHolder(ViewGroup parent) {
         View rootView = LayoutInflater.from(context).inflate(R.layout.sub_header, parent, false);
-        return new SummaryAdapter.SubHeaderHolder(rootView);
+        return new BattingAdapter.SubHeaderHolder(rootView);
     }
 
     @Override
-    public void onBindHeaderHolder(SummaryAdapter.HeaderHolder viewholder, int position) {
+    public void onBindHeaderHolder(BattingAdapter.HeaderHolder viewholder, int position) {
         //viewholder.state.setText(battings.get(position).getTitle());
         if (position+12>battings.size()){
             viewholder.total_score.setText(battings.get(battings.size()-1).getR()+"-");
@@ -90,7 +87,7 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.ViewHold
     }
 
     @Override
-    public void onBindSubHeaderHolder(SummaryAdapter.SubHeaderHolder viewholder, int position) {
+    public void onBindSubHeaderHolder(BattingAdapter.SubHeaderHolder viewholder, int position) {
         viewholder.state.setText("BATTING");
         viewholder.run_over.setText("R");
         viewholder.ball_maiden.setText("B");

@@ -87,8 +87,8 @@ public class UpcomingFragment extends Fragment {
 
         //Adding the tabs using addTab() method
 
-        fixtab.addTab(fixtab.newTab());
-        fixtab.addTab(fixtab.newTab());
+        fixtab.addTab(fixtab.newTab().setText("International"));
+        fixtab.addTab(fixtab.newTab().setText("Others"));
 
         fixView.setAdapter(new TabsAdapter(getChildFragmentManager(), fixtab.getTabCount(), getContext()));
 

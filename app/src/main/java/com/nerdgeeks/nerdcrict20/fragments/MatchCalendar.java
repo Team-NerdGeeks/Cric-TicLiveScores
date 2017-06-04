@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.nerdgeeks.nerdcrict20.R;
 import com.nerdgeeks.nerdcrict20.adapters.CalendarAdapter;
@@ -49,6 +50,7 @@ public class MatchCalendar extends Fragment implements View.OnClickListener{
     private RecyclerView recyclerView;
     private FloatingActionButton mFabButton;
     private List<Datum> data;
+    private ProgressBar circular_progress;
 
 
     public MatchCalendar() {
@@ -89,6 +91,7 @@ public class MatchCalendar extends Fragment implements View.OnClickListener{
         View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.mRecyclerView);
         mFabButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        circular_progress = (ProgressBar) rootView.findViewById(R.id.circular_progress);
         mFabButton.setOnClickListener(this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -134,11 +137,12 @@ public class MatchCalendar extends Fragment implements View.OnClickListener{
                 calendarAdapter = new CalendarAdapter(getContext(), data);
                 recyclerView.setAdapter(calendarAdapter);
 
+                circular_progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<Calendar> call, Throwable t) {
-
+                circular_progress.setVisibility(View.INVISIBLE);
             }
         });
     }

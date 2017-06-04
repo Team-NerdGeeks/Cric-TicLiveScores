@@ -2,13 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nerdgeeks.nerdcrict20.fragments.InterFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.nerdgeeks.nerdcrict20.fragments.BattingFragment">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/summaryView"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/mRecyclerView"
-        />
+        android:layout_height="match_parent"/>
 
     <ProgressBar
         android:id="@+id/circular_progress"

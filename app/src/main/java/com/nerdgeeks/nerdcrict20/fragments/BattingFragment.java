@@ -2,26 +2,24 @@ package com.nerdgeeks.nerdcrict20.fragments;
 
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.nerdgeeks.nerdcrict20.R;
-import com.nerdgeeks.nerdcrict20.adapters.MatchAdapter;
+import com.nerdgeeks.nerdcrict20.adapters.BattingAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
-import com.nerdgeeks.nerdcrict20.models.Match;
-import com.nerdgeeks.nerdcrict20.models.Matches;
+import com.nerdgeeks.nerdcrict20.helper.DividerItemDecoration;
+import com.nerdgeeks.nerdcrict20.helper.DoubleHeaderDecoration;
+import com.nerdgeeks.nerdcrict20.models.Batting;
+import com.nerdgeeks.nerdcrict20.models.Score__;
+import com.nerdgeeks.nerdcrict20.models.Summary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +30,10 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link InterFragment#newInstance} factory method to
+ * Use the {@link BattingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class InterFragment extends Fragment {
+public class BattingFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,13 +42,13 @@ public class InterFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private MatchAdapter matchAdapter;
     private RecyclerView recyclerView;
-    private List<Match> upcomingMatches = new ArrayList<>();
+    private BattingAdapter adapter;
+    private DoubleHeaderDecoration decor;
     private ProgressBar circular_progress;
 
 
-    public InterFragment() {
+    public BattingFragment() {
         // Required empty public constructor
     }
 
@@ -60,11 +58,11 @@ public class InterFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment InterFragment.
+     * @return A new instance of fragment BattingFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static InterFragment newInstance(String param1, String param2) {
-        InterFragment fragment = new InterFragment();
+    public static BattingFragment newInstance(String param1, String param2) {
+        BattingFragment fragment = new BattingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -84,48 +82,55 @@ public class InterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_inter, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.mRecyclerView);
+        // Inflate the layout for this fragmentView rootView = inflater.inflate(R.layout.fragment_upcoming, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_batting, container, false);
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.summaryView);
         circular_progress = (ProgressBar) rootView.findViewById(R.id.circular_progress);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&v=3";
-        getUpcomingMatchesData(Url,rootView);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        String UniqueId = getActivity().getIntent().getStringExtra("unique_id");
+        String Url = "/api/fantasySummary?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+UniqueId;
+        getSummaryMatchesData(Url);
 
         return rootView;
     }
 
-    private void getUpcomingMatchesData(String URL, View rootView){
-        ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-        Call<Matches> call = service.getMatchData(URL);
+    private void getSummaryMatchesData(String URL){
+        final ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+        Call<Summary> call = service.getSummary(URL);
 
-        call.enqueue(new Callback<Matches>() {
+        call.enqueue(new Callback<Summary>() {
             @Override
-            public void onResponse(Call<Matches> call, Response<Matches> response) {
+            public void onResponse(Call<Summary> call, Response<Summary> response) {
                 Log.d("onResponse", response.message());
 
-                Matches matches = response.body();
+                Summary summary = response.body();
+                List<Score__> bat_score = new ArrayList<Score__>();
 
-                for(int i=0; i<matches.getMatches().size();i++){
-                    if( (!matches.getMatches().get(i).getMatchStarted()) &&
-                            ( matches.getMatches().get(i).getType().equals("One-Day Internationals") ||
-                                    matches.getMatches().get(i).getType().equals("Twenty20 Internationals"))) {
-                        upcomingMatches.add(matches.getMatches().get(i));
+                for(int i=0; i<summary.getData().getBatting().size(); i++){
+                    Batting bat = summary.getData().getBatting().get(i);
+                    if(bat.getScores()!= null){
+                        int size = bat.getScores().size();
+                        for (int j=0; j<size; j++){
+                            bat_score.add(bat.getScores().get(j));
+                        }
                     }
                 }
-
-                matchAdapter = new MatchAdapter(getContext(),upcomingMatches);
-                recyclerView.setAdapter(matchAdapter);
+                adapter = new BattingAdapter(getContext(),bat_score);
+                decor = new DoubleHeaderDecoration(adapter);
+                recyclerView.setAdapter(adapter);
+                recyclerView.addItemDecoration(decor, 1);
                 circular_progress.setVisibility(View.INVISIBLE);
-
             }
 
             @Override
-            public void onFailure(Call<Matches> call, Throwable t) {
+            public void onFailure(Call<Summary> call, Throwable t) {
                 circular_progress.setVisibility(View.INVISIBLE);
             }
         });
     }
+
 }

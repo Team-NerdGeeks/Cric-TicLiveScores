@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nerdgeeks.nerdcrict20.CommentaryActivity;
 import com.nerdgeeks.nerdcrict20.MatchActivity;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
@@ -94,6 +95,16 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
                     context.overridePendingTransition(R.anim.anim_enter,R.anim.anim_leave);
                 }
             });
+
+            holder.ball_by_ball.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, CommentaryActivity.class);
+                    intent.putExtra("unique_id", uID);
+                    context.startActivity(intent);
+                    context.overridePendingTransition(R.anim.anim_enter,R.anim.anim_leave);
+                }
+            });
         } else {
            holder.error_msg.setVisibility(View.VISIBLE);
         }
@@ -144,7 +155,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
         private TextView team1, team2, match_type, match_score, match_inngs, error_msg;
         private CardView card1,card2;
         private  OnItemClickListener onItemClickListener;
-        private AppCompatButton match_center;
+        private AppCompatButton match_center, ball_by_ball;
         ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             team1 = (TextView) itemView.findViewById(R.id.team1);
@@ -156,6 +167,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
             card1 = (CardView) itemView.findViewById(R.id.card_1);
             card2 = (CardView) itemView.findViewById(R.id.card_2);
             match_center = (AppCompatButton) itemView.findViewById(R.id.match_center);
+            ball_by_ball = (AppCompatButton) itemView.findViewById(R.id.ball_by_ball);
             this.onItemClickListener = onItemClickListener;
         }
 

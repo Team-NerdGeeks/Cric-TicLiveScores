@@ -2,6 +2,8 @@ package com.nerdgeeks.nerdcrict20.fragments;
 
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,14 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.nerdgeeks.nerdcrict20.R;
-import com.nerdgeeks.nerdcrict20.adapters.MatchAdapter;
 import com.nerdgeeks.nerdcrict20.adapters.ScoreAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
-import com.nerdgeeks.nerdcrict20.helper.DividerItemDecoration;
 import com.nerdgeeks.nerdcrict20.models.Match;
 import com.nerdgeeks.nerdcrict20.models.Matches;
 
@@ -44,6 +44,8 @@ public class LiveFragment extends Fragment {
     private ScoreAdapter liveAdapter;
     private RecyclerView recyclerView;
     private List<Match> currentMatches = new ArrayList<>();
+    private CoordinatorLayout coordinatorLayout;
+    private ProgressBar circular_progress;
 
 
     public LiveFragment() {
@@ -83,6 +85,8 @@ public class LiveFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_live, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.liveView);
+        coordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.fragment_live);
+        circular_progress = (ProgressBar) rootView.findViewById(R.id.circular_progress);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -112,11 +116,25 @@ public class LiveFragment extends Fragment {
                 liveAdapter = new ScoreAdapter(getActivity(),currentMatches);
                 recyclerView.setAdapter(liveAdapter);
 
+                Snackbar.make(coordinatorLayout, "Loading ....", Snackbar.LENGTH_SHORT).setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+                circular_progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<Matches> call, Throwable t) {
                 Log.d("Error Live", t.getMessage());
+                Snackbar.make(coordinatorLayout, "Unable to resolve host, check your internet connection", Snackbar.LENGTH_INDEFINITE).setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+                circular_progress.setVisibility(View.INVISIBLE);
             }
         });
     }

@@ -137,11 +137,27 @@
         <android.support.v7.widget.AppCompatButton
             android:layout_below="@+id/middle"
             android:id="@+id/match_center"
+            android:layout_alignParentLeft="true"
             android:layout_margin="5dp"
             android:text="@string/match_center"
             android:textColor="#FFFFFF"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:layout_width="150dp"
+            android:drawableLeft="@drawable/ic_center_focus_strong"
+            android:theme="@style/PrimaryButton"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_below="@+id/middle"
+            android:id="@+id/ball_by_ball"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:text="@string/live_commentary"
+            android:textColor="#FFFFFF"
+            android:layout_width="150dp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:drawableLeft="@drawable/ic_ball"
             android:theme="@style/PrimaryButton"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true" />

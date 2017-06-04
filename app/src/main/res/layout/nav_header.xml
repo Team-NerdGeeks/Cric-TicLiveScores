@@ -24,7 +24,7 @@
     <android.support.v7.widget.CardView
         app:cardBackgroundColor="#cc3366"
         app:cardCornerRadius="55dp"
-        app:cardElevation="4dp"
+        app:cardElevation="8dp"
         android:layout_margin="30dp"
         android:shape="ring"
         android:layout_gravity="center|top"
@@ -33,10 +33,11 @@
         android:layout_height="110dp">
 
         <ImageView
+            android:src="@drawable/ic_ball"
             android:layout_gravity="center"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:scaleType="fitCenter" />
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop" />
 
     </android.support.v7.widget.CardView>
 

@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+
 import com.nerdgeeks.nerdcrict20.R;
 
 /**
@@ -25,6 +27,7 @@ public class RankingFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private WebView browser;
+    private ProgressBar circular_progress;
 
     public RankingFragment() {
         // Required empty public constructor
