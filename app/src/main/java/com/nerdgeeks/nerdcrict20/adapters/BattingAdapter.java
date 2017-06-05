@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nerdgeeks.nerdcrict20.R;
 import com.nerdgeeks.nerdcrict20.models.Score__;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +23,16 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
         implements DoubleHeaderAdapter<BattingAdapter.HeaderHolder, BattingAdapter.SubHeaderHolder>{
     private Context context;
     private List<Score__> battings;
+    private ArrayList<String> team;
+    private ArrayList<String> team_size;
+    private int j=0,i=1,k=0;
+    private int kSize,jSize;
 
-    public BattingAdapter(Context context, List<Score__> battings) {
+    public BattingAdapter(Context context, List<Score__> battings, ArrayList<String> team, ArrayList<String> team_size) {
         this.context = context;
         this.battings = battings;
+        this.team = team;
+        this.team_size = team_size;
     }
 
     @Override
@@ -50,14 +58,26 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
 
     @Override
     public long getHeaderId(int position) {
-
-            return position/13;
+        if (position==0 && jSize==0) {
+            jSize = Integer.parseInt(team_size.get(0));
+            return position/jSize;
+        } else {
+            if (position>0 && j<team_size.size())
+                jSize = Integer.parseInt(team_size.get(j++));
+            return position/jSize;
+        }
     }
 
     @Override
     public long getSubHeaderId(int position) {
-
-            return position/13;
+        if (position==0 && kSize==0) {
+            kSize = Integer.parseInt(team_size.get(0));
+            return position/kSize;
+        } else {
+            if (position>0 && k<team_size.size())
+                kSize = Integer.parseInt(team_size.get(k++));
+            return position/kSize;
+        }
     }
 
     @Override
@@ -74,15 +94,31 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
 
     @Override
     public void onBindHeaderHolder(BattingAdapter.HeaderHolder viewholder, int position) {
-        //viewholder.state.setText(battings.get(position).getTitle());
         if (position+12>battings.size()){
+            if (position==0){
+                viewholder.state.setText(team.get(0));
+            }
+            else if (i<team.size()){
+                viewholder.state.setText(team.get(i));
+                i++;
+            }
             viewholder.total_score.setText(battings.get(battings.size()-1).getR()+"-");
             viewholder.run_rate.setText(battings.get(battings.size()-1).getB());
             viewholder.overs.setText(battings.get(battings.size()-1).getDismissalInfo());
         } else {
-            viewholder.total_score.setText(battings.get(position+12).getR()+"-");
-            viewholder.run_rate.setText(battings.get(position+12).getB());
-            viewholder.overs.setText(battings.get(position+12).getDismissalInfo());
+            if (position==0){
+                viewholder.state.setText(team.get(0));
+            }
+            else if (i<team.size()){
+                viewholder.state.setText(team.get(i));
+                i++;
+            }
+
+            if(position+12<battings.size()){
+                viewholder.total_score.setText(battings.get(position+12).getR()+"-");
+                viewholder.run_rate.setText(battings.get(position+12).getB());
+                viewholder.overs.setText(battings.get(position+12).getDismissalInfo());
+            }
         }
     }
 

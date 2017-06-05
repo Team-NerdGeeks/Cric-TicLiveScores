@@ -33,4 +33,15 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/ball_img"
+        android:src="@drawable/ball"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginRight="18dp"
+        android:layout_alignTop="@+id/splash"
+        android:layout_alignRight="@+id/splash"
+        android:layout_alignEnd="@+id/splash"
+        android:layout_marginEnd="18dp" />
+
 </RelativeLayout>

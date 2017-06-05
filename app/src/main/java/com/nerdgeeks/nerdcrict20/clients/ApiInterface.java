@@ -1,5 +1,6 @@
 package com.nerdgeeks.nerdcrict20.clients;
 
+import com.nerdgeeks.nerdcrict20.helper.Result;
 import com.nerdgeeks.nerdcrict20.models.Calendar;
 import com.nerdgeeks.nerdcrict20.models.Commentary;
 import com.nerdgeeks.nerdcrict20.models.LiveMatch;
@@ -29,4 +30,7 @@ public interface ApiInterface {
 
     @GET
     Call<Commentary> getCommentary(@Url String nUrl);
+
+    @GET
+    Call<Result> getResult(@Url String nUrl);
 }

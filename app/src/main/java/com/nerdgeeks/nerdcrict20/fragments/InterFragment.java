@@ -3,6 +3,7 @@ package com.nerdgeeks.nerdcrict20.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
@@ -97,7 +98,7 @@ public class InterFragment extends Fragment {
         return rootView;
     }
 
-    private void getUpcomingMatchesData(String URL, View rootView){
+    private void getUpcomingMatchesData(String URL, final View rootView){
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
         Call<Matches> call = service.getMatchData(URL);
 
@@ -124,6 +125,12 @@ public class InterFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Matches> call, Throwable t) {
+                Snackbar.make(rootView, "Unable to resolve host, check your internet connection", Snackbar.LENGTH_INDEFINITE).setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
                 circular_progress.setVisibility(View.INVISIBLE);
             }
         });

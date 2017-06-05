@@ -20,11 +20,13 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         View mSplashImage = findViewById(R.id.splash);
+        View nSplashImage = findViewById(R.id.ball_img);
         TextView mSplashText = (TextView) findViewById(R.id.splashText);
         Animation splashAnimImage = AnimationUtils.loadAnimation(this, R.anim.splash_anim_img);
         Animation splashAnimText = AnimationUtils.loadAnimation(this, R.anim.splash_anim);
         mSplashText.startAnimation(splashAnimText);
         mSplashImage.startAnimation(splashAnimImage);
+        nSplashImage.startAnimation(splashAnimImage);
 
 
         int SPLASH_DISPLAY_LENGTH = 1000;

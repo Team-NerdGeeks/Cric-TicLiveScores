@@ -47,6 +47,7 @@ public class BowlingFragment extends Fragment {
     private RecyclerView recyclerView;
     private BowlingAdapter adapter;
     private DoubleHeaderDecoration decor;
+    private ArrayList<String> team_innings = new ArrayList<>();
 
 
     public BowlingFragment() {
@@ -99,7 +100,7 @@ public class BowlingFragment extends Fragment {
     }
 
     private void getSummaryMatchesData(String URL){
-        ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+        final ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
         Call<Summary> call = service.getSummary(URL);
 
         call.enqueue(new Callback<Summary>() {
@@ -112,18 +113,19 @@ public class BowlingFragment extends Fragment {
 
                 List<Score_> bowl_score = new ArrayList<>();
 
-                if (summary.getData()!= null){
-                    for(int i=0; i<summary.getData().getBowling().size(); i++){
-                        Bowling bowl = summary.getData().getBowling().get(i);
+                for(int i=0; i<summary.getData().getBowling().size(); i++){
+                    Bowling bowl = summary.getData().getBowling().get(i);
+                    team_innings.add(bowl.getTitle());
+                    if (bowl.getScores()!= null){
                         for (int j=0; j<bowl.getScores().size(); j++){
                             bowl_score.add(bowl.getScores().get(j));
                         }
                     }
-                    adapter = new BowlingAdapter(getContext(),bowl_score);
-                    decor = new DoubleHeaderDecoration(adapter);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.addItemDecoration(decor, 1);
                 }
+                adapter = new BowlingAdapter(getContext(),bowl_score, team_innings);
+                decor = new DoubleHeaderDecoration(adapter);
+                recyclerView.setAdapter(adapter);
+                recyclerView.addItemDecoration(decor, 1);
             }
 
             @Override

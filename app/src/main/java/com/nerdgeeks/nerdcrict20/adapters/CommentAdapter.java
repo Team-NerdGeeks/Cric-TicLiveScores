@@ -38,10 +38,35 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.card.setCardBackgroundColor(getRandomMaterialColor("400"));
-        holder.event.setText(ball.get(position).getEvent());
-        holder.dismiss.setText(ball.get(position).getDismissal());
-        holder.actual_over.setText(ball.get(position).getOversActual());
-        holder.players.setText(ball.get(position).getPlayers());
+        if(!ball.get(position).getText().equals("")){
+            holder.text.setText(ball.get(position).getText());
+        }else {
+            holder.text.setVisibility(View.INVISIBLE);
+        }
+
+        if(!ball.get(position).getEvent().equals("")){
+            holder.event.setText(ball.get(position).getEvent());
+        }else {
+            holder.event.setVisibility(View.INVISIBLE);
+        }
+
+        if(!ball.get(position).getDismissal().equals("")){
+            holder.dismiss.setText(ball.get(position).getDismissal());
+        }else {
+            holder.dismiss.setVisibility(View.INVISIBLE);
+        }
+
+        if(!ball.get(position).getOversActual().equals("")){
+            holder.actual_over.setText(ball.get(position).getOversActual() + " Ov.");
+        }else {
+            holder.actual_over.setVisibility(View.INVISIBLE);
+        }
+
+        if(!ball.get(position).getPlayers().equals("")){
+            holder.players.setText(ball.get(position).getPlayers());
+        }else {
+            holder.players.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -64,10 +89,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView event, dismiss, actual_over, players;
+        private TextView text, event, dismiss, actual_over, players;
         private CardView card;
         ViewHolder(View itemView) {
             super(itemView);
+            text = (TextView) itemView.findViewById(R.id.text);
             event = (TextView) itemView.findViewById(R.id.event);
             dismiss = (TextView) itemView.findViewById(R.id.dismiss);
             actual_over = (TextView) itemView.findViewById(R.id.overs_actual);

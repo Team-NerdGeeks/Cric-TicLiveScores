@@ -2,6 +2,7 @@ package com.nerdgeeks.nerdcrict20.fragments;
 
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
 import com.nerdgeeks.nerdcrict20.helper.DividerItemDecoration;
 import com.nerdgeeks.nerdcrict20.helper.DoubleHeaderDecoration;
 import com.nerdgeeks.nerdcrict20.models.Batting;
+import com.nerdgeeks.nerdcrict20.models.Score;
 import com.nerdgeeks.nerdcrict20.models.Score__;
 import com.nerdgeeks.nerdcrict20.models.Summary;
 
@@ -46,7 +48,8 @@ public class BattingFragment extends Fragment {
     private BattingAdapter adapter;
     private DoubleHeaderDecoration decor;
     private ProgressBar circular_progress;
-
+    private ArrayList<String> team_innings = new ArrayList<>();
+    private ArrayList<String> team_player = new ArrayList<>();
 
     public BattingFragment() {
         // Required empty public constructor
@@ -93,12 +96,12 @@ public class BattingFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         String UniqueId = getActivity().getIntent().getStringExtra("unique_id");
         String Url = "/api/fantasySummary?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+UniqueId;
-        getSummaryMatchesData(Url);
+        getSummaryMatchesData(Url,rootView);
 
         return rootView;
     }
 
-    private void getSummaryMatchesData(String URL){
+    private void getSummaryMatchesData(String URL, final View rootView){
         final ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
         Call<Summary> call = service.getSummary(URL);
 
@@ -112,14 +115,16 @@ public class BattingFragment extends Fragment {
 
                 for(int i=0; i<summary.getData().getBatting().size(); i++){
                     Batting bat = summary.getData().getBatting().get(i);
+                    team_innings.add(bat.getTitle());
                     if(bat.getScores()!= null){
                         int size = bat.getScores().size();
+                        team_player.add(String.valueOf(size));
                         for (int j=0; j<size; j++){
                             bat_score.add(bat.getScores().get(j));
                         }
                     }
                 }
-                adapter = new BattingAdapter(getContext(),bat_score);
+                adapter = new BattingAdapter(getContext(),bat_score, team_innings, team_player);
                 decor = new DoubleHeaderDecoration(adapter);
                 recyclerView.setAdapter(adapter);
                 recyclerView.addItemDecoration(decor, 1);
@@ -128,6 +133,12 @@ public class BattingFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Summary> call, Throwable t) {
+                Snackbar.make(rootView, "Unable to resolve host, check your internet connection", Snackbar.LENGTH_INDEFINITE).setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
                 circular_progress.setVisibility(View.INVISIBLE);
             }
         });

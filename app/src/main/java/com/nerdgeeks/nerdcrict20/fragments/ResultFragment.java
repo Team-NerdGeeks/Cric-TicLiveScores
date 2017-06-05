@@ -1,12 +1,28 @@
 package com.nerdgeeks.nerdcrict20.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.nerdgeeks.nerdcrict20.R;
+import com.nerdgeeks.nerdcrict20.adapters.ResultAdapter;
+import com.nerdgeeks.nerdcrict20.adapters.ScoreAdapter;
+import com.nerdgeeks.nerdcrict20.clients.ApiClient;
+import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
+import com.nerdgeeks.nerdcrict20.helper.Result;
+import com.nerdgeeks.nerdcrict20.models.Matches;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +38,10 @@ public class ResultFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView recyclerView;
+    private CoordinatorLayout coordinatorLayout;
+    private ProgressBar circular_progress;
+    private ResultAdapter resultAdapter;
 
     public ResultFragment() {
         // Required empty public constructor
@@ -58,6 +78,46 @@ public class ResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_result, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_result, container, false);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.resultView);
+        coordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.fragment_result);
+        circular_progress = (ProgressBar) rootView.findViewById(R.id.circular_progress);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        String Url = "/api/cricket/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1";
+        getLiveMatchesData(Url,rootView);
+        return rootView;
+    }
+
+    private void getLiveMatchesData(String url, View rootView) {
+        ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+        Call<Result> call = service.getResult(url);
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                Log.d("Live onResponse", response.message());
+
+                Result results = response.body();
+
+                resultAdapter = new ResultAdapter(getActivity(),results.getData());
+                recyclerView.setAdapter(resultAdapter);
+
+                circular_progress.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.d("Error Live", t.getMessage());
+                Snackbar.make(coordinatorLayout, "Unable to resolve host, check your internet connection", Snackbar.LENGTH_INDEFINITE).setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+                circular_progress.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 }

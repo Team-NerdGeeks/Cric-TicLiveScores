@@ -1,5 +1,7 @@
 package com.nerdgeeks.nerdcrict20;
 
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.nerdgeeks.nerdcrict20.adapters.CommentAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
@@ -30,6 +33,7 @@ public class CommentaryActivity extends AppCompatActivity {
     private CommentAdapter adapter;
     private List<Ball> comment_ = new ArrayList<>();;
     private ProgressBar circular_progress;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +50,10 @@ public class CommentaryActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.commentView);
         circular_progress = (ProgressBar) findViewById(R.id.circular_progress);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.comment_layout);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         String UniqueId = getIntent().getStringExtra("unique_id");
         String Url = "/api/ballByBall?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+UniqueId;
         getCommentaryData(Url);
@@ -80,6 +84,12 @@ public class CommentaryActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Commentary> call, Throwable t) {
+                Snackbar.make(coordinatorLayout, "Unable to resolve host, check your internet connection", Snackbar.LENGTH_INDEFINITE).setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
                 circular_progress.setVisibility(View.INVISIBLE);
             }
         });

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.nerdgeeks.nerdcrict20.R;
 import com.nerdgeeks.nerdcrict20.models.Score_;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +22,13 @@ public class BowlingAdapter extends RecyclerView.Adapter<BowlingAdapter.ViewHold
         implements DoubleHeaderAdapter<BowlingAdapter.HeaderHolder, BowlingAdapter.SubHeaderHolder>{
     private Context context;
     private List<Score_> bowling;
+    private ArrayList<String> team;
+    private int i;
 
-    public BowlingAdapter(Context context, List<Score_> bowling) {
+    public BowlingAdapter(Context context, List<Score_> bowling, ArrayList<String> team) {
         this.context = context;
         this.bowling = bowling;
+        this.team = team;
     }
 
     @Override
@@ -50,13 +54,13 @@ public class BowlingAdapter extends RecyclerView.Adapter<BowlingAdapter.ViewHold
     @Override
     public long getHeaderId(int position) {
 
-        return position/13;
+        return position/6;
     }
 
     @Override
     public long getSubHeaderId(int position) {
 
-        return position/13;
+        return position/6;
     }
 
     @Override
@@ -73,16 +77,17 @@ public class BowlingAdapter extends RecyclerView.Adapter<BowlingAdapter.ViewHold
 
     @Override
     public void onBindHeaderHolder(BowlingAdapter.HeaderHolder viewholder, int position) {
-//        if (position+12>bowling.size()){
-//            viewholder.state.setText(bowling.);
-//            viewholder.total_score.setText(bowling.get(bowling.size()-1).getR()+"-");
-//            viewholder.run_rate.setText(battings.get(battings.size()-1).getB());
-//            viewholder.overs.setText(battings.get(battings.size()-1).getDismissalInfo());
-//        } else {
-//            viewholder.total_score.setText(battings.get(position+12).getR()+"-");
-//            viewholder.run_rate.setText(battings.get(position+12).getB());
-//            viewholder.overs.setText(battings.get(position+12).getDismissalInfo());
-//        }
+        if(position+5>bowling.size()){
+            if (i<team.size()){
+                viewholder.state.setText(team.get(i));
+                i++;
+            }
+        } else {
+            if (i<team.size()){
+                viewholder.state.setText(team.get(i));
+                i++;
+            }
+        }
     }
 
     @Override
@@ -95,11 +100,10 @@ public class BowlingAdapter extends RecyclerView.Adapter<BowlingAdapter.ViewHold
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView name, dismiss, run_over, ball_maiden, fours_run, sixes_wicket;
+        private TextView name, run_over, ball_maiden, fours_run, sixes_wicket;
         ViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
-            dismiss = (TextView) itemView.findViewById(R.id.dismissal);
             run_over = (TextView) itemView.findViewById(R.id.run_over);
             ball_maiden = (TextView) itemView.findViewById(R.id.ball_maiden);
             fours_run = (TextView) itemView.findViewById(R.id.fours_run);
@@ -109,14 +113,11 @@ public class BowlingAdapter extends RecyclerView.Adapter<BowlingAdapter.ViewHold
 
     class HeaderHolder extends RecyclerView.ViewHolder{
         private ImageView img_flag;
-        private TextView state, total_score, overs, run_rate;
+        private TextView state;
         HeaderHolder(View itemView) {
             super(itemView);
             img_flag = (ImageView) itemView.findViewById(R.id.img_flag);
             state = (TextView) itemView.findViewById(R.id.state);
-            total_score = (TextView) itemView.findViewById(R.id.total_score);
-            overs = (TextView) itemView.findViewById(R.id.overs);
-            run_rate = (TextView) itemView.findViewById(R.id.run_rate);
         }
     }
 

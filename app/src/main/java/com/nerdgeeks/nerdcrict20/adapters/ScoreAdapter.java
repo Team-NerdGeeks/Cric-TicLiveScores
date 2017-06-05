@@ -69,7 +69,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         if(matches!= null){
             holder.error_msg.setVisibility(View.INVISIBLE);
@@ -82,7 +82,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
             holder.match_type.setText(matches.get(position).getType());
 
             final String uID = String.valueOf(matches.get(position).getUniqueId());
-            String url= "/api/cricketScore?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+uID;
+            final String url= "/api/cricketScore?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+uID;
             getLiveScoreData(url, holder);
 
 
