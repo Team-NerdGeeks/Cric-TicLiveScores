@@ -25,7 +25,7 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
     private List<Score__> battings;
     private ArrayList<String> team;
     private ArrayList<String> team_size;
-    private int j=0,i=1,k=0;
+    private int j=13,i=0,k=0;
     private int kSize,jSize;
 
     public BattingAdapter(Context context, List<Score__> battings, ArrayList<String> team, ArrayList<String> team_size) {
@@ -58,26 +58,20 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
 
     @Override
     public long getHeaderId(int position) {
-        if (position==0 && jSize==0) {
-            jSize = Integer.parseInt(team_size.get(0));
-            return position/jSize;
-        } else {
-            if (position>0 && j<team_size.size())
-                jSize = Integer.parseInt(team_size.get(j++));
-            return position/jSize;
+
+        if(battings.get(position).getBatsman().equals("Total")) {
+            j = position + 1;
         }
+        return position/j;
     }
 
     @Override
     public long getSubHeaderId(int position) {
-        if (position==0 && kSize==0) {
-            kSize = Integer.parseInt(team_size.get(0));
-            return position/kSize;
-        } else {
-            if (position>0 && k<team_size.size())
-                kSize = Integer.parseInt(team_size.get(k++));
-            return position/kSize;
+
+        if(battings.get(position).getBatsman().equals("Total")) {
+            j = position + 1;
         }
+        return position/j;
     }
 
     @Override
@@ -94,32 +88,18 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
 
     @Override
     public void onBindHeaderHolder(BattingAdapter.HeaderHolder viewholder, int position) {
-        if (position+12>battings.size()){
-            if (position==0){
-                viewholder.state.setText(team.get(0));
-            }
-            else if (i<team.size()){
-                viewholder.state.setText(team.get(i));
-                i++;
-            }
-            viewholder.total_score.setText(battings.get(battings.size()-1).getR()+"-");
-            viewholder.run_rate.setText(battings.get(battings.size()-1).getB());
-            viewholder.overs.setText(battings.get(battings.size()-1).getDismissalInfo());
-        } else {
-            if (position==0){
-                viewholder.state.setText(team.get(0));
-            }
-            else if (i<team.size()){
-                viewholder.state.setText(team.get(i));
-                i++;
-            }
-
-            if(position+12<battings.size()){
-                viewholder.total_score.setText(battings.get(position+12).getR()+"-");
-                viewholder.run_rate.setText(battings.get(position+12).getB());
-                viewholder.overs.setText(battings.get(position+12).getDismissalInfo());
-            }
+        if (position==0){
+            viewholder.state.setText(team.get(0));
+            i++;
         }
+        else if (i<team.size()){
+            viewholder.state.setText(team.get(i));
+            i++;
+        }
+        Toast.makeText(context,String.valueOf(position),Toast.LENGTH_LONG).show();
+        viewholder.total_score.setText(battings.get(battings.size()-1).getR()+"-");
+        viewholder.run_rate.setText(battings.get(battings.size()-1).getB());
+        viewholder.overs.setText(battings.get(battings.size()-1).getDismissalInfo());
     }
 
     @Override
