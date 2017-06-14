@@ -54,6 +54,7 @@ public class CommentaryActivity extends AppCompatActivity {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         String UniqueId = getIntent().getStringExtra("unique_id");
         String Url = "/api/ballByBall?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&unique_id="+UniqueId;
         getCommentaryData(Url);

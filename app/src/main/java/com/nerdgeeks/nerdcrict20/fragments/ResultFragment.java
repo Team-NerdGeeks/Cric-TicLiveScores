@@ -17,6 +17,7 @@ import com.nerdgeeks.nerdcrict20.adapters.ResultAdapter;
 import com.nerdgeeks.nerdcrict20.adapters.ScoreAdapter;
 import com.nerdgeeks.nerdcrict20.clients.ApiClient;
 import com.nerdgeeks.nerdcrict20.clients.ApiInterface;
+import com.nerdgeeks.nerdcrict20.helper.DividerItemDecoration;
 import com.nerdgeeks.nerdcrict20.helper.Result;
 import com.nerdgeeks.nerdcrict20.models.Matches;
 
@@ -85,6 +86,7 @@ public class ResultFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         String Url = "/api/cricket/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1";
         getLiveMatchesData(Url,rootView);
         return rootView;

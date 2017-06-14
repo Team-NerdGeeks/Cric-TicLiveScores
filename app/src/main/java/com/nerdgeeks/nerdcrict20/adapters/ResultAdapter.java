@@ -40,7 +40,6 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.card.setCardBackgroundColor(getRandomMaterialColor("400"));
         holder.title.setText(data.get(position).getTitle());
 
         final String uID = data.get(position).getUniqueId();

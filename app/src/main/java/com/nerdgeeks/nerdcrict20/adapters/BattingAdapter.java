@@ -25,8 +25,6 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
     private List<Score__> battings;
     private ArrayList<String> team;
     private ArrayList<String> team_size;
-    private int j=13,i=0,k=0;
-    private int kSize,jSize;
 
     public BattingAdapter(Context context, List<Score__> battings, ArrayList<String> team, ArrayList<String> team_size) {
         this.context = context;
@@ -58,20 +56,88 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
 
     @Override
     public long getHeaderId(int position) {
+        if(team_size.size()==1){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            } else {
+                return 0;
+            }
+        } else if(team_size.size()==2){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            }else
+                return 0;
+        } else if(team_size.size()==3){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            }
+            else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)));
+                return position/jSize;
+            }else
+                return 0;
 
-        if(battings.get(position).getBatsman().equals("Total")) {
-            j = position + 1;
-        }
-        return position/j;
+        } else if(team_size.size()==4) {
+            if (position == Integer.parseInt(team_size.get(0))) {
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            } else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)));
+                return position/jSize;
+            } else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1))+Integer.parseInt(team_size.get(2)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1))+Integer.parseInt(team_size.get(2)));
+                return position/jSize;
+            }else
+                return 0;
+
+        } else
+            return 0;
     }
 
     @Override
     public long getSubHeaderId(int position) {
+        if(team_size.size()==1){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int kSize = Integer.parseInt(team_size.get(0));
+                return position/kSize;
+            } else
+                return 0;
 
-        if(battings.get(position).getBatsman().equals("Total")) {
-            j = position + 1;
-        }
-        return position/j;
+        } else if(team_size.size()==2){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int kSize = Integer.parseInt(team_size.get(0));
+                return position/kSize;
+            }else
+                return 0;
+
+        } else if(team_size.size()==3){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int kSize = Integer.parseInt(team_size.get(0));
+                return position/kSize;
+            }
+            else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)))){
+                int kSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)));
+                return position/kSize;
+            }else
+                return 0;
+
+        } else if(team_size.size()==4) {
+            if (position == Integer.parseInt(team_size.get(0))) {
+                int kSize = Integer.parseInt(team_size.get(0));
+                return position/kSize;
+            } else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)))){
+                int kSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)));
+                return position/kSize;
+            } else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1))+Integer.parseInt(team_size.get(2)))){
+                int kSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1))+Integer.parseInt(team_size.get(2)));
+                return position/kSize;
+            }else
+                return 0;
+        } else
+            return 0;
     }
 
     @Override
@@ -88,18 +154,38 @@ public class BattingAdapter extends RecyclerView.Adapter<BattingAdapter.ViewHold
 
     @Override
     public void onBindHeaderHolder(BattingAdapter.HeaderHolder viewholder, int position) {
-        if (position==0){
-            viewholder.state.setText(team.get(0));
-            i++;
+        switch (team_size.size()){
+            case 1:
+                viewholder.state.setText(team.get(0));
+                break;
+            case 2:
+                if(position==Integer.parseInt(team_size.get(0)))
+                    viewholder.state.setText(team.get(1));
+                else
+                    viewholder.state.setText(team.get(0));
+                break;
+            case 3:
+                if(position==Integer.parseInt(team_size.get(0)))
+                    viewholder.state.setText(team.get(1));
+                else if(position==Integer.parseInt(team_size.get(1)))
+                    viewholder.state.setText(team.get(2));
+                else
+                    viewholder.state.setText(team.get(0));
+                break;
+            case 4:
+                if(position==Integer.parseInt(team_size.get(0)))
+                    viewholder.state.setText(team.get(1));
+                else if(position==Integer.parseInt(team_size.get(1)))
+                    viewholder.state.setText(team.get(2));
+                else if(position==Integer.parseInt(team_size.get(2)))
+                    viewholder.state.setText(team.get(3));
+                else
+                    viewholder.state.setText(team.get(0));
+                break;
+            default:
+                break;
+
         }
-        else if (i<team.size()){
-            viewholder.state.setText(team.get(i));
-            i++;
-        }
-        Toast.makeText(context,String.valueOf(position),Toast.LENGTH_LONG).show();
-        viewholder.total_score.setText(battings.get(battings.size()-1).getR()+"-");
-        viewholder.run_rate.setText(battings.get(battings.size()-1).getB());
-        viewholder.overs.setText(battings.get(battings.size()-1).getDismissalInfo());
     }
 
     @Override

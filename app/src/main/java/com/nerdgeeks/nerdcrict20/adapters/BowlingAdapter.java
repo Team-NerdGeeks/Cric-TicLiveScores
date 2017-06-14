@@ -23,12 +23,14 @@ public class BowlingAdapter extends RecyclerView.Adapter<BowlingAdapter.ViewHold
     private Context context;
     private List<Score_> bowling;
     private ArrayList<String> team;
+    private ArrayList<String> team_size;
     private int i;
 
-    public BowlingAdapter(Context context, List<Score_> bowling, ArrayList<String> team) {
+    public BowlingAdapter(Context context, List<Score_> bowling, ArrayList<String> team, ArrayList<String> team_size) {
         this.context = context;
         this.bowling = bowling;
         this.team = team;
+        this.team_size = team_size;
     }
 
     @Override
@@ -53,14 +55,87 @@ public class BowlingAdapter extends RecyclerView.Adapter<BowlingAdapter.ViewHold
 
     @Override
     public long getHeaderId(int position) {
+        if(team_size.size()==1){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            } else {
+                return 0;
+            }
+        } else if(team_size.size()==2){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            }else
+                return 0;
+        } else if(team_size.size()==3){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            }
+            else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)));
+                return position/jSize;
+            }else
+                return 0;
 
-        return position/6;
+        } else if(team_size.size()==4) {
+            if (position == Integer.parseInt(team_size.get(0))) {
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            } else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)));
+                return position/jSize;
+            } else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1))+Integer.parseInt(team_size.get(2)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1))+Integer.parseInt(team_size.get(2)));
+                return position/jSize;
+            }else
+                return 0;
+
+        } else
+            return 0;
     }
 
     @Override
     public long getSubHeaderId(int position) {
+        if(team_size.size()==1){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            } else
+                return 0;
+        } else if(team_size.size()==2){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            }else
+                return 0;
+        } else if(team_size.size()==3){
+            if(position==Integer.parseInt(team_size.get(0))){
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            }
+            else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)));
+                return position/jSize;
+            }else
+                return 0;
 
-        return position/6;
+        } else if(team_size.size()==4) {
+            if (position == Integer.parseInt(team_size.get(0))) {
+                int jSize = Integer.parseInt(team_size.get(0));
+                return position/jSize;
+            } else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1)));
+                return position/jSize;
+            } else if(position==(Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1))+Integer.parseInt(team_size.get(2)))){
+                int jSize = (Integer.parseInt(team_size.get(0))+ Integer.parseInt(team_size.get(1))+Integer.parseInt(team_size.get(2)));
+                return position/jSize;
+            }else
+                return 0;
+
+        } else
+            return 0;
     }
 
     @Override

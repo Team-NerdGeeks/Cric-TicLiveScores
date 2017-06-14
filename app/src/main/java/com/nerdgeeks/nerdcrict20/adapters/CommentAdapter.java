@@ -37,7 +37,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.card.setCardBackgroundColor(getRandomMaterialColor("400"));
         if(!ball.get(position).getText().equals("")){
             holder.text.setText(ball.get(position).getText());
         }else {
@@ -45,7 +44,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
 
         if(!ball.get(position).getEvent().equals("")){
-            holder.event.setText(ball.get(position).getEvent());
+            if(ball.get(position).getEvent().equals("FOUR")){
+                holder.event.setText("4 runs");
+            } else if(ball.get(position).getEvent().equals("SIX")){
+                holder.event.setText("6 runs");
+            } else
+                holder.event.setText(ball.get(position).getEvent());
         }else {
             holder.event.setVisibility(View.INVISIBLE);
         }

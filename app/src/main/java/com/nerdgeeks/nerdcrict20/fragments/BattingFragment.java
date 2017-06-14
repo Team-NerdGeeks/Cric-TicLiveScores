@@ -113,14 +113,16 @@ public class BattingFragment extends Fragment {
                 Summary summary = response.body();
                 List<Score__> bat_score = new ArrayList<Score__>();
 
-                for(int i=0; i<summary.getData().getBatting().size(); i++){
-                    Batting bat = summary.getData().getBatting().get(i);
-                    team_innings.add(bat.getTitle());
-                    if(bat.getScores()!= null){
-                        int size = bat.getScores().size();
-                        team_player.add(String.valueOf(size));
-                        for (int j=0; j<size; j++){
-                            bat_score.add(bat.getScores().get(j));
+                if (summary.getData().getBatting()!=null) {
+                    for (int i = 0; i < summary.getData().getBatting().size(); i++) {
+                        Batting bat = summary.getData().getBatting().get(i);
+                        team_innings.add(bat.getTitle());
+                        if (bat.getScores() != null) {
+                            int size = bat.getScores().size();
+                            team_player.add(String.valueOf(size));
+                            for (int j = 0; j < size; j++) {
+                                bat_score.add(bat.getScores().get(j));
+                            }
                         }
                     }
                 }

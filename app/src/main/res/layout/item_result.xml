@@ -4,12 +4,10 @@
     android:layout_height="wrap_content"
     android:id="@+id/card_result"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true"
-    app:cardElevation="2dp">
+    app:cardElevation="0dp">
 
     <TextView
-        android:textColor="#FFFFFF"
-        android:padding="2dp"
+        android:padding="5dp"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:id="@+id/title_result"

@@ -48,6 +48,7 @@ public class BowlingFragment extends Fragment {
     private BowlingAdapter adapter;
     private DoubleHeaderDecoration decor;
     private ArrayList<String> team_innings = new ArrayList<>();
+    private ArrayList<String> team_player = new ArrayList<>();
 
 
     public BowlingFragment() {
@@ -113,16 +114,20 @@ public class BowlingFragment extends Fragment {
 
                 List<Score_> bowl_score = new ArrayList<>();
 
-                for(int i=0; i<summary.getData().getBowling().size(); i++){
-                    Bowling bowl = summary.getData().getBowling().get(i);
-                    team_innings.add(bowl.getTitle());
-                    if (bowl.getScores()!= null){
-                        for (int j=0; j<bowl.getScores().size(); j++){
-                            bowl_score.add(bowl.getScores().get(j));
+                if (summary.getData().getBowling()!=null){
+                    for(int i=0; i<summary.getData().getBowling().size(); i++){
+                        Bowling bowl = summary.getData().getBowling().get(i);
+                        team_innings.add(bowl.getTitle());
+                        if (bowl.getScores()!= null){
+                            int size = bowl.getScores().size();
+                            team_player.add(String.valueOf(size));
+                            for (int j=0; j<bowl.getScores().size(); j++){
+                                bowl_score.add(bowl.getScores().get(j));
+                            }
                         }
                     }
                 }
-                adapter = new BowlingAdapter(getContext(),bowl_score, team_innings);
+                adapter = new BowlingAdapter(getContext(),bowl_score, team_innings, team_player);
                 decor = new DoubleHeaderDecoration(adapter);
                 recyclerView.setAdapter(adapter);
                 recyclerView.addItemDecoration(decor, 1);

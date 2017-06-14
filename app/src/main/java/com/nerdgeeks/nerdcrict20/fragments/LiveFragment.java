@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.nerdgeeks.nerdcrict20.R;
@@ -46,6 +48,7 @@ public class LiveFragment extends Fragment {
     private List<Match> currentMatches = new ArrayList<>();
     private CoordinatorLayout coordinatorLayout;
     private ProgressBar circular_progress;
+    private ImageView imgCloud;
 
 
     public LiveFragment() {
@@ -83,20 +86,29 @@ public class LiveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_live, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_live, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.liveView);
         coordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.fragment_live);
         circular_progress = (ProgressBar) rootView.findViewById(R.id.circular_progress);
+        imgCloud = (ImageView) rootView.findViewById(R.id.cloud);
+        final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-        String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&v=3";
+        final String Url = "/api/matches/?apikey=n6kNCNcVwPbDzWWvjU1q7hmsoJg1&v=3";
         getLiveMatchesData(Url,rootView);
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getLiveMatchesData(Url,rootView);
+                refreshLayout.setRefreshing(false);
+            }
+        });
         return rootView;
     }
 
-    private void getLiveMatchesData(String url, View rootView) {
+    private void getLiveMatchesData(final String url, final View rootView) {
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
         Call<Matches> call = service.getMatchData(url);
 
@@ -115,26 +127,21 @@ public class LiveFragment extends Fragment {
                 
                 liveAdapter = new ScoreAdapter(getActivity(),currentMatches);
                 recyclerView.setAdapter(liveAdapter);
-
-                Snackbar.make(coordinatorLayout, "Loading ....", Snackbar.LENGTH_SHORT).setAction("Dismiss", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
                 circular_progress.setVisibility(View.INVISIBLE);
+                imgCloud.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<Matches> call, Throwable t) {
                 Log.d("Error Live", t.getMessage());
-                Snackbar.make(coordinatorLayout, "Unable to resolve host, check your internet connection", Snackbar.LENGTH_INDEFINITE).setAction("Dismiss", new View.OnClickListener() {
+                Snackbar.make(coordinatorLayout, "Unable to resolve host, check your internet connection", Snackbar.LENGTH_INDEFINITE).setAction("RETRY", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        getLiveMatchesData(url,rootView);
                     }
                 }).show();
                 circular_progress.setVisibility(View.INVISIBLE);
+                imgCloud.setVisibility(View.VISIBLE);
             }
         });
     }
