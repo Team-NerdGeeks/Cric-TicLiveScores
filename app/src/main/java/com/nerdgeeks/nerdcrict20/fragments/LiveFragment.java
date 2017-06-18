@@ -101,8 +101,14 @@ public class LiveFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getLiveMatchesData(Url,rootView);
-                refreshLayout.setRefreshing(false);
+                if (currentMatches!=null){
+                    currentMatches.clear();
+                    getLiveMatchesData(Url,rootView);
+                    refreshLayout.setRefreshing(false);
+                }else {
+                    getLiveMatchesData(Url,rootView);
+                    refreshLayout.setRefreshing(false);
+                }
             }
         });
         return rootView;
